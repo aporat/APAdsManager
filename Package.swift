@@ -29,7 +29,7 @@ let package = Package(
                 "SwiftyUserDefaults",
                 "SnapKit",
                 "DeviceKit",
-                .product(name: "GoogleMobileAds", package: "GoogleMobileAds")
+                .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads")
             ]
         )
     ]
