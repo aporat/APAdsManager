@@ -34,4 +34,4 @@ jobs:
         run: |
           xcodebuild build \
             -scheme $scheme \
-            -destination 'platform=iOS Simulator,name=${{ matrix.platform }},OS=${{ matrix.os }}'
+            -destination 'platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}'
