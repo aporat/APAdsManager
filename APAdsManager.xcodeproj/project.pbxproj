@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -36,7 +36,6 @@
 /* Begin PBXFrameworksBuildPhase section */
 		537EDD0124F49F1E003DC54A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				776FEF872DA06C2F00A2D956 /* SnapKit in Frameworks */,
 				776FEF8A2DA06C3E00A2D956 /* DeviceKit in Frameworks */,
@@ -44,15 +43,12 @@
 				776FEF812DA06C0E00A2D956 /* SwifterSwift in Frameworks */,
 				776FEF842DA06C2000A2D956 /* SwiftyUserDefaults in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		537EDD0A24F49F1E003DC54A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				537EDD0E24F49F1E003DC54A /* APAdsManager.framework in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -89,10 +85,8 @@
 /* Begin PBXHeadersBuildPhase section */
 		537EDCFF24F49F1E003DC54A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
@@ -107,8 +101,6 @@
 				537EDD0224F49F1E003DC54A /* Resources */,
 			);
 			buildRules = (
-			);
-			dependencies = (
 			);
 			name = APAdsManager;
 			packageProductDependencies = (
@@ -136,8 +128,6 @@
 				537EDD1024F49F1E003DC54A /* PBXTargetDependency */,
 			);
 			name = APAdsManagerTests;
-			packageProductDependencies = (
-			);
 			productName = ProgressToolbarTests;
 			productReference = 537EDD0D24F49F1E003DC54A /* APAdsManagerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -178,7 +168,7 @@
 				776FEF882DA06C3E00A2D956 /* XCRemoteSwiftPackageReference "DeviceKit" */,
 				776FEF8B2DA06C5000A2D956 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 537EDD0524F49F1E003DC54A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -192,34 +182,26 @@
 /* Begin PBXResourcesBuildPhase section */
 		537EDD0224F49F1E003DC54A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		537EDD0B24F49F1E003DC54A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		537EDD0024F49F1E003DC54A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		537EDD0924F49F1E003DC54A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -232,7 +214,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		537EDD1624F49F1E003DC54A /* Debug */ = {
+		537EDD1624F49F1E003DC54A /* Debug configuration for PBXProject "APAdsManager" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -298,7 +280,7 @@
 			};
 			name = Debug;
 		};
-		537EDD1724F49F1E003DC54A /* Release */ = {
+		537EDD1724F49F1E003DC54A /* Release configuration for PBXProject "APAdsManager" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -358,7 +340,7 @@
 			};
 			name = Release;
 		};
-		537EDD1924F49F1E003DC54A /* Debug */ = {
+		537EDD1924F49F1E003DC54A /* Debug configuration for PBXNativeTarget "APAdsManager" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -387,7 +369,7 @@
 			};
 			name = Debug;
 		};
-		537EDD1A24F49F1E003DC54A /* Release */ = {
+		537EDD1A24F49F1E003DC54A /* Release configuration for PBXNativeTarget "APAdsManager" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -415,7 +397,7 @@
 			};
 			name = Release;
 		};
-		537EDD1C24F49F1E003DC54A /* Debug */ = {
+		537EDD1C24F49F1E003DC54A /* Debug configuration for PBXNativeTarget "APAdsManagerTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -434,7 +416,7 @@
 			};
 			name = Debug;
 		};
-		537EDD1D24F49F1E003DC54A /* Release */ = {
+		537EDD1D24F49F1E003DC54A /* Release configuration for PBXNativeTarget "APAdsManagerTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -458,28 +440,25 @@
 		537EDCFE24F49F1E003DC54A /* Build configuration list for PBXProject "APAdsManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				537EDD1624F49F1E003DC54A /* Debug */,
-				537EDD1724F49F1E003DC54A /* Release */,
+				537EDD1624F49F1E003DC54A /* Debug configuration for PBXProject "APAdsManager" */,
+				537EDD1724F49F1E003DC54A /* Release configuration for PBXProject "APAdsManager" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		537EDD1824F49F1E003DC54A /* Build configuration list for PBXNativeTarget "APAdsManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				537EDD1924F49F1E003DC54A /* Debug */,
-				537EDD1A24F49F1E003DC54A /* Release */,
+				537EDD1924F49F1E003DC54A /* Debug configuration for PBXNativeTarget "APAdsManager" */,
+				537EDD1A24F49F1E003DC54A /* Release configuration for PBXNativeTarget "APAdsManager" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		537EDD1B24F49F1E003DC54A /* Build configuration list for PBXNativeTarget "APAdsManagerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				537EDD1C24F49F1E003DC54A /* Debug */,
-				537EDD1D24F49F1E003DC54A /* Release */,
+				537EDD1C24F49F1E003DC54A /* Debug configuration for PBXNativeTarget "APAdsManagerTests" */,
+				537EDD1D24F49F1E003DC54A /* Release configuration for PBXNativeTarget "APAdsManagerTests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
@@ -521,7 +500,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 12.2.0;
 			};
 		};
