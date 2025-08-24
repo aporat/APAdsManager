@@ -65,13 +65,36 @@ public final class AdsManager: NSObject {
         }
     }
     
-    public func askForPermissions(_ completion: @escaping (Bool) -> Void) {
+    public func askForPermissions(
+        completion: @escaping (ATTrackingManager.AuthorizationStatus) -> Void
+    ) {
         DispatchQueue.main.async {
-            if Defaults.ATTrackingManagerPermissions, ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-                ATTrackingManager.requestTrackingAuthorization() { _ in }
-                completion(true)
+            let request: () -> Void = {
+                if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+                    ATTrackingManager.requestTrackingAuthorization { status in
+                        DispatchQueue.main.async {
+                            completion(status)
+                        }
+                    }
+                } else {
+                    completion(ATTrackingManager.trackingAuthorizationStatus)
+                }
+            }
+
+            if UIApplication.shared.applicationState == .active {
+                request()
             } else {
-                completion(false)
+                var obs: NSObjectProtocol?
+                obs = NotificationCenter.default.addObserver(
+                    forName: UIApplication.didBecomeActiveNotification,
+                    object: nil,
+                    queue: .main
+                ) { _ in
+                    if let observer = obs {
+                        NotificationCenter.default.removeObserver(observer)
+                    }
+                    request()
+                }
             }
         }
     }
