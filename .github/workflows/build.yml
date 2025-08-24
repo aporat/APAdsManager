@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: ${{ matrix.platform }} on ${{ matrix.os }}
-    runs-on: macos-latest
+    runs-on: macos-14
     env:
       scheme: APAdsManager
     strategy:
