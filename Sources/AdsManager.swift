@@ -57,9 +57,7 @@ public final class AdsManager: NSObject {
         AdMobInterstitialUnitId = interstitialUnitId
         AdMobRewardAdUnitId = rewardVideoUnitId
         
-        if Defaults.admob,
-           !isSDKLoaded
-        {
+        if Defaults.admob, !isSDKLoaded {
             isSDKLoaded = true
             MobileAds.shared.start()
         }
@@ -72,9 +70,7 @@ public final class AdsManager: NSObject {
             let request: () -> Void = {
                 if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
                     ATTrackingManager.requestTrackingAuthorization { status in
-                        DispatchQueue.main.async {
-                            completion(status)
-                        }
+                        DispatchQueue.main.async { completion(status) }
                     }
                 } else {
                     completion(ATTrackingManager.trackingAuthorizationStatus)
@@ -84,13 +80,13 @@ public final class AdsManager: NSObject {
             if UIApplication.shared.applicationState == .active {
                 request()
             } else {
-                var obs: NSObjectProtocol?
-                obs = NotificationCenter.default.addObserver(
+                var token: NSObjectProtocol?
+                token = NotificationCenter.default.addObserver(
                     forName: UIApplication.didBecomeActiveNotification,
                     object: nil,
                     queue: .main
-                ) { _ in
-                    if let observer = obs {
+                ) { [token] _ in
+                    if let observer = token {
                         NotificationCenter.default.removeObserver(observer)
                     }
                     request()
@@ -107,15 +103,16 @@ public final class AdsManager: NSObject {
            let adUnitId = AdMobRewardAdUnitId
         {
             isRewardAdLoading = true
-            
-            if let currentDelegate = delegate {
-                rewardVideoDelegate = currentDelegate
-            }
+            if let currentDelegate = delegate { rewardVideoDelegate = currentDelegate }
             
             let request = Request()
-            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug ? "ca-app-pub-3940256099942544/1712485313" : adUnitId
+            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug
+                ? "ca-app-pub-3940256099942544/1712485313"
+                : adUnitId
             
-            RewardedAd.load(with: currentAdUnitId, request: request) { ad, error in
+            RewardedAd.load(with: currentAdUnitId, request: request) { [weak self] ad, error in
+                guard let self else { return }
+                
                 if error != nil {
                     self.rewardVideoDelegate?.rewardVideoDidFailToLoad()
                 } else {
@@ -127,7 +124,6 @@ public final class AdsManager: NSObject {
                 
                 let options = ServerSideVerificationOptions()
                 options.userIdentifier = self.userIdentifier
-                
                 self.currentRewardAd?.serverSideVerificationOptions = options
                 self.currentRewardAd?.fullScreenContentDelegate = self
             }
@@ -145,16 +141,16 @@ public final class AdsManager: NSObject {
             currentBannerView = BannerView()
             currentBannerView?.rootViewController = rootViewController
             
-            
-            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug ? "ca-app-pub-3940256099942544/2934735716" : adUnitId
-            
+            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug
+                ? "ca-app-pub-3940256099942544/2934735716"
+                : adUnitId
             currentBannerView?.adUnitID = currentAdUnitId
             
             let viewWidth = rootViewController.view.frame.inset(by: rootViewController.view.safeAreaInsets).width
             currentBannerView?.adSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
             
             currentBannerView?.delegate = self
-            currentBannerView?.isAutoloadEnabled = true
+            currentBannerView?.load(Request())   // use explicit load instead of isAutoloadEnabled
         }
     }
     
@@ -167,27 +163,27 @@ public final class AdsManager: NSObject {
         {
             isInterstitialLoading = true
             
-            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug ? "ca-app-pub-3940256099942544/4411468910" : adUnitId
+            let currentAdUnitId = UIApplication.shared.inferredEnvironment == .debug
+                ? "ca-app-pub-3940256099942544/4411468910"
+                : adUnitId
             
             let request = Request()
-            
-            InterstitialAd.load(with: currentAdUnitId, request: request) { ad, error in
+            InterstitialAd.load(with: currentAdUnitId, request: request) { [weak self] ad, error in
+                guard let self else { return }
                 if let currentAd = ad, error == nil {
                     self.currentInterstitial = currentAd
                     self.currentInterstitial?.fullScreenContentDelegate = self
                 }
-                
                 self.isInterstitialLoading = false
             }
         }
     }
 }
 
-// MARK: - GADFullScreenContentDelegate
+// MARK: - FullScreenContentDelegate
 
 extension AdsManager: FullScreenContentDelegate {
     public func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-        
         if ad is InterstitialAd {
             AdsManager.shared.currentInterstitial = nil
             loadInterstitial()
@@ -199,7 +195,7 @@ extension AdsManager: FullScreenContentDelegate {
     }
 }
 
-// MARK: - GADBannerViewDelegate
+// MARK: - BannerViewDelegate
 
 extension AdsManager: BannerViewDelegate {
     public func bannerViewDidReceiveAd(_ bannerView: BannerView) {

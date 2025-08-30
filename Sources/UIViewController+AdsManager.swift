@@ -1,3 +1,5 @@
+import UIKit
+import SwifterSwift
 import DeviceKit
 import GoogleMobileAds
 import SwiftyUserDefaults
@@ -40,13 +42,14 @@ extension UIViewController {
             containerView.addSubview(currentBannerView)
         }
         
+        // Snap the container to safe-area bottom and to the banner intrinsic ad size
         containerView.snp.remakeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
-            make.width.equalTo(currentBannerView.size.width)
-            make.height.equalTo(currentBannerView.size.height)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.width.equalTo(currentBannerView.adSize.size.width)
+            make.height.equalTo(currentBannerView.adSize.size.height)
         }
         
-        currentBannerView.snp.makeConstraints { make in
+        currentBannerView.snp.remakeConstraints { make in
             make.center.equalTo(containerView)
         }
     }
@@ -57,16 +60,11 @@ extension UIViewController {
             make.width.equalTo(0)
             make.bottom.equalToSuperview()
         }
-        
         containerView.removeSubviews()
     }
     
     public var isRewardVideoReady: Bool {
-        if AdsManager.shared.currentRewardAd != nil {
-            return true
-        }
-        
-        return false
+        return AdsManager.shared.currentRewardAd != nil
     }
     
     @objc public func showRewardVideo() {
@@ -87,11 +85,11 @@ extension UIViewController {
             return
         }
         
-        // show an ad every few actions, no more than 1 per 20 minutes
+        // Show an ad every few actions, no more than 1 per 20 minutes
         if !AdsManager.shared.isInterstitialLoading,
            Defaults.actionsPerInterstitial > 0,
            Int.random(in: 0 ... 2) == 0,
-           appLastInterstitialShown < Date().adding(.minute, value: 20),
+           appLastInterstitialShown < Date().adding(.minute, value: -20), // last shown > 20 min ago
            Defaults.appInterstitialActionsCounter > Defaults.actionsPerInterstitial
         {
             if AdsManager.shared.currentInterstitial != nil {
