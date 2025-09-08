@@ -15,7 +15,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "7.0.0"),
+        .package(url: "https://github.com/SwifterSwift/SwifterSwift.git", from: "8.0.0"),
         .package(url: "https://github.com/sunshinejr/SwiftyUserDefaults.git", from: "5.0.0"),
         .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.0"),
         .package(url: "https://github.com/devicekit/DeviceKit.git", from: "5.0.0"),
