@@ -2,9 +2,10 @@ import UIKit
 import SwifterSwift
 import DeviceKit
 import GoogleMobileAds
-import SwiftyUserDefaults
+@preconcurrency import SwiftyUserDefaults
 import SnapKit
 
+@MainActor
 extension UIViewController {
     public func loadBannerIfNeeded(delegate: AdsManagerBannerDelegate) {
         AdsManager.shared.loadBanner(delegate: delegate, rootViewController: self)

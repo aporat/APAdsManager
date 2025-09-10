@@ -1,6 +1,6 @@
 import DeviceKit
-import GoogleMobileAds
-import SwiftyUserDefaults
+@preconcurrency import GoogleMobileAds
+@preconcurrency import SwiftyUserDefaults
 import AppTrackingTransparency
 import AdSupport
 import UIKit
@@ -32,6 +32,7 @@ public protocol AdsManagerBannerDelegate: AnyObject {
     func bannerDidFailToReceive(_ bannerView: UIView)
 }
 
+@MainActor
 public final class AdsManager: NSObject {
     public static let shared = AdsManager()
     
