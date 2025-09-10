@@ -1,8 +1,9 @@
 import XCTest
 @testable import APAdsManager
-import SwiftyUserDefaults
+@preconcurrency import SwiftyUserDefaults
 import UIKit
 
+@MainActor
 final class APAdsManagerTests: XCTestCase {
 
     override func setUp() {
