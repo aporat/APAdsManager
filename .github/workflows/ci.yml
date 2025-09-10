@@ -18,7 +18,7 @@ jobs:
         include:
           - platform: iOS Simulator
             device: iPhone 16 Pro
-            os: "18.6"
+            os: "18.5"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -30,8 +30,8 @@ jobs:
         with:
           xcode-version: latest-stable
 
-      - name: Run Build on ${{ matrix.platform }} (iOS ${{ matrix.os }})
+      - name: Run Test on ${{ matrix.platform }} (iOS ${{ matrix.os }})
         run: |
-          xcodebuild build \
+          xcodebuild test \
             -scheme $scheme \
             -destination 'platform=${{ matrix.platform }},name=${{ matrix.device }},OS=${{ matrix.os }}'
