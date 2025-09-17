@@ -67,7 +67,7 @@ public final class AdsManager: NSObject {
     public func askForTrackingPermission(completion: @escaping (ATTrackingManager.AuthorizationStatus) -> Void) {
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
             ATTrackingManager.requestTrackingAuthorization { status in
-                Task { @MainActor in completion(status) }
+                completion(status)
             }
         } else {
             completion(ATTrackingManager.trackingAuthorizationStatus)
@@ -185,3 +185,4 @@ extension AdsManager: BannerViewDelegate {
         bannerDelegate?.bannerDidFailToReceive(bannerView)
     }
 }
+
