@@ -64,13 +64,15 @@ public final class AdsManager: NSObject {
         }
     }
     
-    public func askForTrackingPermission(completion: @escaping (ATTrackingManager.AuthorizationStatus) -> Void) {
-        if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+    public func askForPermission() async -> ATTrackingManager.AuthorizationStatus {
+        if ATTrackingManager.trackingAuthorizationStatus != .notDetermined {
+            return ATTrackingManager.trackingAuthorizationStatus
+        }
+
+        return await withCheckedContinuation { continuation in
             ATTrackingManager.requestTrackingAuthorization { status in
-                completion(status)
+                continuation.resume(returning: status)
             }
-        } else {
-            completion(ATTrackingManager.trackingAuthorizationStatus)
         }
     }
     
@@ -129,7 +131,7 @@ public final class AdsManager: NSObject {
             currentBannerView?.adSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
             
             currentBannerView?.delegate = self
-            currentBannerView?.load(Request())   // use explicit load instead of isAutoloadEnabled
+            currentBannerView?.load(Request()) 
         }
     }
     
