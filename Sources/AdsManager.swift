@@ -64,6 +64,7 @@ public final class AdsManager: NSObject {
         }
     }
     
+    @discardableResult
     public func askForPermission() async -> ATTrackingManager.AuthorizationStatus {
         if ATTrackingManager.trackingAuthorizationStatus != .notDetermined {
             return ATTrackingManager.trackingAuthorizationStatus
