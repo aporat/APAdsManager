@@ -93,21 +93,26 @@ public final class AdsManager: NSObject {
                 : adUnitId
             
             RewardedAd.load(with: currentAdUnitId, request: request) { [weak self] ad, error in
-                guard let self else { return }
-                
-                if error != nil {
-                    self.rewardVideoDelegate?.rewardVideoDidFailToLoad()
-                } else {
-                    self.rewardVideoDelegate?.rewardVideoDidReceive()
+                nonisolated(unsafe) let unsafeAd = ad
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    
+                    if error != nil {
+                        self.rewardVideoDelegate?.rewardVideoDidFailToLoad()
+                    } else {
+                        self.rewardVideoDelegate?.rewardVideoDidReceive()
+                    }
+                    
+                    self.isRewardAdLoading = false
+                    self.currentRewardAd = unsafeAd
+                    
+                    if let ad = self.currentRewardAd {
+                        let options = ServerSideVerificationOptions()
+                        options.userIdentifier = self.userIdentifier
+                        ad.serverSideVerificationOptions = options
+                        ad.fullScreenContentDelegate = self
+                    }
                 }
-                
-                self.isRewardAdLoading = false
-                self.currentRewardAd = ad
-                
-                let options = ServerSideVerificationOptions()
-                options.userIdentifier = self.userIdentifier
-                self.currentRewardAd?.serverSideVerificationOptions = options
-                self.currentRewardAd?.fullScreenContentDelegate = self
             }
         }
     }
@@ -151,12 +156,16 @@ public final class AdsManager: NSObject {
             
             let request = Request()
             InterstitialAd.load(with: currentAdUnitId, request: request) { [weak self] ad, error in
-                guard let self else { return }
-                if let currentAd = ad, error == nil {
-                    self.currentInterstitial = currentAd
-                    self.currentInterstitial?.fullScreenContentDelegate = self
+                nonisolated(unsafe) let unsafeAd = ad
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+
+                    if let ad = unsafeAd, error == nil {
+                        self.currentInterstitial = ad
+                        self.currentInterstitial?.fullScreenContentDelegate = self
+                    }
+                    self.isInterstitialLoading = false
                 }
-                self.isInterstitialLoading = false
             }
         }
     }
