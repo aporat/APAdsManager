@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/sunshinejr/SwiftyUserDefaults.git", from: "5.0.0"),
         .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.7.0"),
         .package(url: "https://github.com/devicekit/DeviceKit.git", from: "5.0.0"),
-        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "12.0.0")
+        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "13.0.0")
     ],
     targets: [
         .target(
