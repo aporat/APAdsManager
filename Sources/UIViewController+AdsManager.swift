@@ -79,35 +79,40 @@ extension UIViewController {
     }
     
     public func showInterstitialIfNeeded() {
-        Defaults.appInterstitialActionsCounter = Defaults.appInterstitialActionsCounter + 1
+        let adsManager = AdsManager.shared
+        adsManager.incrementInterstitialActionsCounter()
         
-        guard let appLastInterstitialShown = Defaults.appLastInterstitialShown else {
-            Defaults.appLastInterstitialShown = Date()
+        guard let appLastInterstitialShown = adsManager.getLastInterstitialShown() else {
+            adsManager.updateLastInterstitialShown(Date())
             return
         }
         
+        let actionsPerInterstitial = adsManager.currentActionsPerInterstitial
+        
         // Show an ad every few actions, no more than 1 per 20 minutes
-        if !AdsManager.shared.isInterstitialLoading,
-           Defaults.actionsPerInterstitial > 0,
+        if !adsManager.isInterstitialLoading,
+           actionsPerInterstitial > 0,
            Int.random(in: 0 ... 2) == 0,
            appLastInterstitialShown < Date().adding(.minute, value: -20), // last shown > 20 min ago
-           Defaults.appInterstitialActionsCounter > Defaults.actionsPerInterstitial
+           adsManager.getInterstitialActionsCounter() > actionsPerInterstitial
         {
-            if AdsManager.shared.currentInterstitial != nil {
+            if adsManager.currentInterstitial != nil {
                 showInterstitial()
             } else {
-                AdsManager.shared.loadInterstitial()
+                adsManager.loadInterstitial()
             }
         }
     }
     
     public func showInterstitial() {
-        if let currentInterstitial = AdsManager.shared.currentInterstitial,
-           Defaults.actionsPerInterstitial > 0,
-           Defaults.admob
+        let adsManager = AdsManager.shared
+        let actionsPerInterstitial = adsManager.currentActionsPerInterstitial
+        
+        if let currentInterstitial = adsManager.currentInterstitial,
+           actionsPerInterstitial > 0
         {
-            Defaults.appInterstitialActionsCounter = 0
-            Defaults.appLastInterstitialShown = Date()
+            adsManager.resetInterstitialActionsCounter()
+            adsManager.updateLastInterstitialShown(Date())
             
             DispatchQueue.main.async {
                 currentInterstitial.present(from: self)

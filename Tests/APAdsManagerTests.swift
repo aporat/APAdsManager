@@ -12,7 +12,6 @@ final class APAdsManagerTests: XCTestCase {
         Defaults[\.appInterstitialActionsCounter] = 0
         Defaults[\.appLastInterstitialShown] = nil
         Defaults[\.actionsPerInterstitial] = 3
-        Defaults[\.admob] = true
     }
 
     override func tearDown() {

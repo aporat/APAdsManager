@@ -1,24 +1,9 @@
 import DeviceKit
 @preconcurrency import GoogleMobileAds
-@preconcurrency import SwiftyUserDefaults
 import AppTrackingTransparency
 import AdSupport
 import UIKit
 import SwifterSwift
-
-extension DefaultsKeys {
-    var admob: DefaultsKey<Bool> { .init("kServiceAdMob", defaultValue: true) }
-    var ATTrackingManagerPermissions: DefaultsKey<Bool> { .init("kATTrackingManagerPermissions", defaultValue: true) }
-    var banners: DefaultsKey<Bool> { .init("kServiceBanners", defaultValue: true) }
-    var actionsPerInterstitial: DefaultsKey<Int> { .init("kServiceActionsPerInterstitial", defaultValue: 15) }
-    var appLastInterstitialShown: DefaultsKey<Date?> { .init("AppLastInterstitialShown") }
-    var appInterstitialActionsCounter: DefaultsKey<Int> { .init("AppInterstitialActionsCounter", defaultValue: 0) }
-}
-
-public extension DefaultsKeys {
-    var adsMode: DefaultsKey<Bool> { .init("kAdsMode", defaultValue: false) }
-    var coinsPerRewardVideo: DefaultsKey<Int> { .init("kServiceCoinsPerRewardVideo", defaultValue: 0) }
-}
 
 public protocol AdsManagerRewardAdDelegate: AnyObject {
     func rewardVideoDidReceive()
@@ -53,15 +38,66 @@ public final class AdsManager: NSObject {
     
     public var userIdentifier: String?
     
-    public func startSDK(interstitialUnitId: String?, bannerUnitId: String? = nil, rewardVideoUnitId: String? = nil) {
+    // Interstitial tracking
+    private var lastInterstitialShown: Date?
+    private var interstitialActionsCounter: Int = 0
+    
+    // Remote Config values
+    private var coinsPerRewardVideo: Int = 0
+    private var actionsPerInterstitial: Int = 0
+    private var bannersEnabled: Bool = true
+    
+    // Public accessors for remote config values
+    public var currentActionsPerInterstitial: Int {
+        return actionsPerInterstitial
+    }
+    
+    public func startSDK(
+        interstitialUnitId: String?,
+        bannerUnitId: String? = nil,
+        rewardVideoUnitId: String? = nil
+    ) {
         AdMobBannerUnitId = bannerUnitId
         AdMobInterstitialUnitId = interstitialUnitId
         AdMobRewardAdUnitId = rewardVideoUnitId
         
-        if Defaults.admob, !isSDKLoaded {
+        if !isSDKLoaded {
             isSDKLoaded = true
             MobileAds.shared.start()
         }
+    }
+    
+    /// Update remote config values dynamically
+    public func updateRemoteConfigValues(
+        coinsPerRewardVideo: Int,
+        actionsPerInterstitial: Int,
+        bannersEnabled: Bool
+    ) {
+        self.coinsPerRewardVideo = coinsPerRewardVideo
+        self.actionsPerInterstitial = actionsPerInterstitial
+        self.bannersEnabled = bannersEnabled
+    }
+    
+    // MARK: - Interstitial Counter Management
+    
+    public func incrementInterstitialActionsCounter() {
+        interstitialActionsCounter += 1
+    }
+    
+    public func resetInterstitialActionsCounter() {
+        interstitialActionsCounter = 0
+    }
+    
+    public func getInterstitialActionsCounter() -> Int {
+        return interstitialActionsCounter
+    }
+    
+    public func updateLastInterstitialShown(_ date: Date) {
+        lastInterstitialShown = date
+    }
+    
+    public func getLastInterstitialShown() -> Date? {
+        return lastInterstitialShown
     }
     
     @discardableResult
@@ -78,9 +114,8 @@ public final class AdsManager: NSObject {
     }
     
     public func loadRewardAd(delegate: AdsManagerRewardAdDelegate?) {
-        if Defaults.admob,
-           isSDKLoaded,
-           Defaults.coinsPerRewardVideo > 0,
+        if isSDKLoaded,
+           coinsPerRewardVideo > 0,
            !isRewardAdLoading,
            let adUnitId = AdMobRewardAdUnitId
         {
@@ -118,8 +153,7 @@ public final class AdsManager: NSObject {
     }
     
     func loadBanner(delegate: AdsManagerBannerDelegate, rootViewController: UIViewController) {
-        if Defaults.banners,
-           Defaults.admob,
+        if bannersEnabled,
            isSDKLoaded,
            let adUnitId = AdMobBannerUnitId
         {
@@ -142,10 +176,9 @@ public final class AdsManager: NSObject {
     }
     
     public func loadInterstitial() {
-        if Defaults.admob,
-           isSDKLoaded,
+        if isSDKLoaded,
            !isInterstitialLoading,
-           Defaults.actionsPerInterstitial > 0,
+           actionsPerInterstitial > 0,
            let adUnitId = AdMobInterstitialUnitId
         {
             isInterstitialLoading = true
